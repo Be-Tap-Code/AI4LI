@@ -1,0 +1,7 @@
+google-generativeai>=0.8.5
+gtts>=2.5.4
+Pillow>=9.0.0
+openai-whisper>=20231117
+pydub>=0.25.1
+numpy>=1.24.0
+soundfile>=0.12.1 
