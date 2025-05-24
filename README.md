@@ -20,17 +20,13 @@ This system processes audio files containing questions about products and genera
 
 1. Clone this repository:
 ```bash
-git clone <repository-url>
-cd <repository-name>
+git clone https://github.com/YOUR_USERNAME/AI4LI.git
+cd AI4LI
 ```
 
 2. Install the required packages:
 ```bash
-pip install google-generativeai
-pip install gtts
-pip install Pillow
-pip install openai-whisper
-pip install pydub
+pip install -r requirements.txt
 ```
 
 3. Install FFmpeg:
@@ -50,16 +46,16 @@ pip install pydub
 
 ## Configuration
 
-1. Open `main.py` and update the following configuration variables:
+1. Create a `.env` file in the project root:
+```bash
+GOOGLE_API_KEY=your_api_key_here
+```
+
+2. Update the paths in `main.py`:
 ```python
-GOOGLE_API_KEY = 'YOUR_API_KEY'  # Replace with your Google API key
 OUTPUT_DIR = r"path/to/output/directory"  # Replace with your desired output directory
 IMAGE_PATH = r"path/to/your/image.jpg"  # Replace with your image path
 AUDIO_PATH = r"path/to/your/audio.m4a"  # Replace with your audio path
-```
-
-2. Update the FFmpeg path in `main.py`:
-```python
 FFMPEG_PATH = r"path/to/your/ffmpeg/bin"  # Replace with your FFmpeg bin directory
 ```
 
@@ -89,7 +85,6 @@ The script will generate:
 
 ```python
 # Example configuration in main.py
-GOOGLE_API_KEY = 'your-api-key-here'
 OUTPUT_DIR = r"C:\Users\YourName\Documents\AI4LI"
 IMAGE_PATH = r"C:\Users\YourName\Documents\AI4LI\product.jpg"
 AUDIO_PATH = r"C:\Users\YourName\Documents\AI4LI\question.m4a"
@@ -118,4 +113,16 @@ FFMPEG_PATH = r"E:\ffmpeg\bin"
 - The system is optimized for Vietnamese language
 - Audio files are automatically converted to WAV format for processing
 - Temporary files are automatically cleaned up after processing
-- The Gemini API has usage limits, monitor your API key usage 
+- The Gemini API has usage limits, monitor your API key usage
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details 

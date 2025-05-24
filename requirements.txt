@@ -4,4 +4,5 @@ Pillow>=9.0.0
 openai-whisper>=20231117
 pydub>=0.25.1
 numpy>=1.24.0
-soundfile>=0.12.1 
+soundfile>=0.12.1
+python-dotenv>=1.0.0 
