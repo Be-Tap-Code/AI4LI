@@ -20,7 +20,7 @@ This system processes audio files containing questions about products and genera
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/YOUR_USERNAME/AI4LI.git
+git clone https://github.com/Be-Tap-Code/AI4LI.git
 cd AI4LI
 ```
 
