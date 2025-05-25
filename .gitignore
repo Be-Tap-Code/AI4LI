@@ -31,13 +31,13 @@ ENV/
 *.swp
 *.swo
 
-# Project specific
-output.txt
-output.mp3
-temp.wav
-*.m4a
-*.mp3
-*.wav
+# # Project specific
+# output.txt
+# output.mp3
+# temp.wav
+# *.m4a
+# *.mp3
+# *.wav
 
 # API Keys and sensitive data
 .env
