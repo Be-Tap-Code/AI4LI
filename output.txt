@@ -1,3 +1,1 @@
-Đây là gói bánh quy Marie của thương hiệu Cosy, sản xuất bởi Kinh Đô.
-
-**Sản phẩm này dùng để ăn.**  Bánh quy Marie là một loại bánh ăn nhẹ, được làm từ bột mì, đường, bơ thực vật, và các nguyên liệu khác.  Chúng thường được ăn trực tiếp, hoặc dùng kèm với sữa, trà, cà phê, hoặc các loại đồ uống khác.
+Sản phẩm này là bánh quy sữa Marie dùng để ăn.

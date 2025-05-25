@@ -53,10 +53,10 @@ GOOGLE_API_KEY=your_api_key_here
 
 2. Update the paths in `main.py`:
 ```python
-OUTPUT_DIR = r"path/to/output/directory"  # Replace with your desired output directory
-IMAGE_PATH = r"path/to/your/image.jpg"  # Replace with your image path
-AUDIO_PATH = r"path/to/your/audio.m4a"  # Replace with your audio path
-FFMPEG_PATH = r"path/to/your/ffmpeg/bin"  # Replace with your FFmpeg bin directory
+OUTPUT_DIR = r"path/to/output/directory"  
+IMAGE_PATH = r"path/to/your/image.jpg"  
+AUDIO_PATH = r"path/to/your/audio.m4a" 
+FFMPEG_PATH = r"path/to/your/ffmpeg/bin"  
 ```
 
 ## Usage
@@ -122,7 +122,3 @@ FFMPEG_PATH = r"E:\ffmpeg\bin"
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details 
