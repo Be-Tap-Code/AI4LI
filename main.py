@@ -28,7 +28,7 @@ FFMPEG_PATH = r"E:\ffmpeg-master-latest-win64-gpl-shared\ffmpeg-master-latest-wi
 if FFMPEG_PATH not in os.environ["PATH"]:
     os.environ["PATH"] = FFMPEG_PATH + os.pathsep + os.environ["PATH"]
 
-genai.configure(api_key='AIzaSyBtEqeenect1ALrntllzNZ2gpwIz7oy0Xw')
+genai.configure(api_key='GOOGLE_API_KEY')
 
 try:
     print("Loading Whisper model...")
