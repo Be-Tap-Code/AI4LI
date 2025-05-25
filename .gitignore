@@ -37,6 +37,7 @@ ENV/
 # temp.wav
 # *.m4a
 # *.mp3
+# LICENSE
 # *.wav
 
 # API Keys and sensitive data
