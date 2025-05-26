@@ -16,6 +16,7 @@ import librosa
 import soundfile as sf
 import numpy as np
 from dotenv import load_dotenv
+import platform
 
 load_dotenv()
 
@@ -24,11 +25,47 @@ OUTPUT_DIR = "output"
 IMAGE_PATH = "data/image/20250317_131158.jpg"
 AUDIO_PATH = "data/audio/record.m4a"
 
-FFMPEG_PATH = r"E:\ffmpeg-master-latest-win64-gpl-shared\ffmpeg-master-latest-win64-gpl-shared\bin"
-if FFMPEG_PATH not in os.environ["PATH"]:
+# Platform-specific FFmpeg configuration
+def get_ffmpeg_path():
+    """Get FFmpeg path based on the operating system."""
+    system = platform.system().lower()
+    
+    if system == "darwin":  # macOS
+        # Try common Homebrew locations
+        homebrew_paths = [
+            "/opt/homebrew/bin",  # Apple Silicon Macs
+            "/usr/local/bin"      # Intel Macs
+        ]
+        
+        for path in homebrew_paths:
+            if os.path.exists(os.path.join(path, "ffmpeg")):
+                return path
+        
+        # If not found in Homebrew locations, assume it's in PATH
+        return None
+        
+    elif system == "windows":
+        # Windows FFmpeg path (original)
+        return r"E:\ffmpeg-master-latest-win64-gpl-shared\ffmpeg-master-latest-win64-gpl-shared\bin"
+    
+    else:  # Linux and others
+        return None  # Assume ffmpeg is in PATH
+
+def get_ffmpeg_executable(executable_name):
+    """Get the full path to FFmpeg executable based on OS."""
+    system = platform.system().lower()
+    
+    if system == "windows":
+        return f"{executable_name}.exe"
+    else:
+        return executable_name
+
+# Set FFmpeg path
+FFMPEG_PATH = get_ffmpeg_path()
+if FFMPEG_PATH and FFMPEG_PATH not in os.environ["PATH"]:
     os.environ["PATH"] = FFMPEG_PATH + os.pathsep + os.environ["PATH"]
 
-genai.configure(api_key='GOOGLE_API_KEY')
+genai.configure(api_key=GOOGLE_API_KEY)
 
 try:
     print("Loading Whisper model...")
@@ -88,15 +125,27 @@ def check_ffmpeg():
     except (subprocess.SubprocessError, FileNotFoundError) as e:
         print(f"FFmpeg error: {str(e)}")
         print("\nPlease verify FFmpeg installation:")
-        print(f"1. Check if FFmpeg exists at: {FFMPEG_PATH}")
-        print("2. Make sure these files exist:")
-        print(f"   - {os.path.join(FFMPEG_PATH, 'ffmpeg.exe')}")
-        print(f"   - {os.path.join(FFMPEG_PATH, 'ffprobe.exe')}")
-        print("3. Try adding FFmpeg to PATH manually:")
-        print("   - Open System Properties")
-        print("   - Click 'Environment Variables'")
-        print("   - Under 'System variables', find 'Path'")
-        print("   - Add the FFmpeg bin folder path")
+        
+        system = platform.system().lower()
+        if system == "darwin":  # macOS
+            print("For macOS:")
+            print("1. Install FFmpeg via Homebrew:")
+            print("   brew install ffmpeg")
+            print("2. Or check if FFmpeg exists at common locations:")
+            print("   - /opt/homebrew/bin/ffmpeg (Apple Silicon)")
+            print("   - /usr/local/bin/ffmpeg (Intel Mac)")
+        elif system == "windows":
+            print("For Windows:")
+            print(f"1. Check if FFmpeg exists at: {FFMPEG_PATH}")
+            print("2. Make sure these files exist:")
+            print(f"   - {os.path.join(FFMPEG_PATH or '', 'ffmpeg.exe')}")
+            print(f"   - {os.path.join(FFMPEG_PATH or '', 'ffprobe.exe')}")
+        else:
+            print("For Linux:")
+            print("1. Install FFmpeg via package manager:")
+            print("   sudo apt install ffmpeg  # Ubuntu/Debian")
+            print("   sudo yum install ffmpeg  # CentOS/RHEL")
+        
         return False
 
 def convert_audio_to_wav(input_path, output_path):
@@ -108,14 +157,18 @@ def convert_audio_to_wav(input_path, output_path):
         print(f"Loading audio file: {input_path}")
 
         try:
-            AudioSegment.converter = os.path.join(FFMPEG_PATH, "ffmpeg.exe")
-            AudioSegment.ffmpeg = os.path.join(FFMPEG_PATH, "ffmpeg.exe")
-            AudioSegment.ffprobe = os.path.join(FFMPEG_PATH, "ffprobe.exe")
+            # Set FFmpeg paths based on OS
+            if FFMPEG_PATH:
+                AudioSegment.converter = os.path.join(FFMPEG_PATH, get_ffmpeg_executable("ffmpeg"))
+                AudioSegment.ffmpeg = os.path.join(FFMPEG_PATH, get_ffmpeg_executable("ffmpeg"))
+                AudioSegment.ffprobe = os.path.join(FFMPEG_PATH, get_ffmpeg_executable("ffprobe"))
+            # If FFMPEG_PATH is None, pydub will use system PATH
             
             audio = AudioSegment.from_file(input_path, format="m4a")
         except Exception as e:
             print(f"Error loading M4A file: {str(e)}")
             return False
+        
         print("Converting audio format...")
         audio = audio.set_frame_rate(16000).set_channels(1)
 
@@ -199,6 +252,9 @@ def generate_audio_response(text, output_path):
         return False
 
 def main():
+    print(f"Running on {platform.system()} {platform.release()}")
+    print(f"FFmpeg path: {FFMPEG_PATH or 'Using system PATH'}")
+    
     if not os.path.exists(IMAGE_PATH):
         print(f"Error: Image file not found at {IMAGE_PATH}")
         return
@@ -206,11 +262,13 @@ def main():
     if not os.path.exists(AUDIO_PATH):
         print(f"Error: Audio file not found at {AUDIO_PATH}")
         return
+    
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     information_needs = transcribe_audio(AUDIO_PATH)
     if not information_needs:
         print("Không thể nhận diện giọng nói từ audio.")
         information_needs = "tên, màu sắc, loại sản phẩm và hạn sử dụng"
+    
     description = process_with_gemini(IMAGE_PATH, information_needs)
     if description:
         print("\nThông tin cần trả lời:")
@@ -221,4 +279,4 @@ def main():
         generate_audio_response(description, output_audio)
 
 if __name__ == "__main__":
-    main()
+    main() 
