@@ -91,6 +91,61 @@ AUDIO_PATH = r"C:\Users\YourName\Documents\AI4LI\question.m4a"
 FFMPEG_PATH = r"E:\ffmpeg\bin"
 ```
 
+
+## 🌐 FastAPI Usage
+
+### Quick Setup
+
+
+
+1. **Start the API server:**
+```bash
+python api_server.py
+```
+
+2. **Access the interactive API documentation:**
+   - **Swagger UI:** http://localhost:8000/docs
+
+
+### 🎯 API Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/health` | GET | Check API status and dependencies |
+| `/process-image` | POST | Upload image + text prompt → Get AI description + audio |
+| `/transcribe-audio` | POST | Upload audio → Get transcription |
+| `/process-combined` | POST | Upload image + audio → Combined processing |
+| `/download/audio/{filename}` | GET | Download generated audio files |
+| `/download/text/{filename}` | GET | Download generated text files |
+
+### 🧪 Testing with Swagger UI
+
+1. **Go to:** http://localhost:8000/docs
+2. **Start with health check:** 
+   - Click `GET /health` endpoint
+   - Click **"Try it out"** button
+   - Click **"Execute"** button
+3. **Test image processing:** 
+   - Click `POST /process-image` endpoint
+   - Click **"Try it out"** button
+   - Upload an image file
+   - Enter prompt (e.g., "tên sản phẩm và màu sắc")
+   - Click **"Execute"** button
+4. **Download results - 3 options:**
+   - **Option 1:** Check `api_output/` folder directly
+   - **Option 2:** Use download links: `http://localhost:8000/download/audio/filename.mp3`
+   - **Option 3:** Use GET endpoints in Swagger UI:
+     - Click `GET /download/audio/{filename}` → **"Try it out"** → Enter filename → **"Execute"**
+     - Click `GET /download/text/{filename}` → **"Try it out"** → Enter filename → **"Execute"**
+
+
+
+
+
+
+
+
+
 ## Troubleshooting
 
 1. FFmpeg not found:
