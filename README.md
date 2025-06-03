@@ -1,179 +1,129 @@
-# Audio Processing and Image Recognition System
+# Naviblind API
 
-This system processes audio files containing questions about products and generates audio responses using Gemini's API for image recognition and gTTS for text-to-speech conversion.
+API for processing images and audio using Gemini AI and Whisper for visually impaired people.
 
 ## Features
 
-- Audio file transcription using Whisper model
-- Image recognition using Google's Gemini API
-- Text-to-speech conversion using gTTS
-- Support for various audio formats (MP3, WAV, M4A)
-- Vietnamese language support
+- Product recognition from images using Gemini AI
+- Text-to-Speech conversion
+- Speech-to-Text conversion
+- Combined image and audio processing
 
-## Requirements
+## System Requirements
 
 - Python 3.8 or higher
-- Google API key for Gemini
-- FFmpeg (for audio processing)
+- FFmpeg (included in the repository)
+- Google API Key for Gemini AI
 
 ## Installation
 
-1. Clone this repository:
+1. Clone the repository:
 ```bash
-git clone https://github.com/Be-Tap-Code/AI4LI.git
-cd AI4LI
+git clone https://github.com/Be-Tap-Code/miniature-chainsaw.git
+cd miniature-chainsaw
 ```
 
-2. Install the required packages:
+2. Install required Python packages:
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Install FFmpeg:
-   - Download from: https://github.com/BtbN/FFmpeg-Builds/releases
-   - Look for "ffmpeg-master-latest-win64-gpl.zip"
-   - Extract the zip file
-   - Copy the contents of the `bin` folder to a permanent location (e.g., `E:\ffmpeg\bin`)
-   - Add FFmpeg to your system PATH:
-     1. Open System Properties (Win + Pause/Break)
-     2. Click "Advanced system settings"
-     3. Click "Environment Variables"
-     4. Under "System variables", find and select "Path"
-     5. Click "Edit"
-     6. Click "New"
-     7. Add the path to your FFmpeg bin folder
-     8. Click "OK" on all windows
-
-## Configuration
-
-1. Create a `.env` file in the project root:
-```bash
+3. Create a `.env` file in the root directory and add your Google API Key:
+```
 GOOGLE_API_KEY=your_api_key_here
 ```
 
-2. Update the paths in `main.py`:
-```python
-OUTPUT_DIR = r"path/to/output/directory"  
-IMAGE_PATH = r"path/to/your/image.jpg"  
-AUDIO_PATH = r"path/to/your/audio.m4a" 
-FFMPEG_PATH = r"path/to/your/ffmpeg/bin"  
+## Directory Structure
+
 ```
+miniature-chainsaw/
+├── app.py                 # Main FastAPI application
+├── main.py               # Command-line interface for Windows
+├── main_macos.py         # Command-line interface for macOS
+├── api_server.py         # Alternative API server implementation
+├── .env                  # Environment variables and API keys
+├── requirements.txt      # Python dependencies
+├── api_output/          # Directory for processing results
+│   ├── audio/          # Generated audio files
+│   └── text/           # Generated text files
+├── uploads/             # Temporary directory for uploaded files
+└── ffmpeg-master-latest-win64-gpl-shared/  # Pre-installed FFmpeg
+    └── bin/
+        ├── ffmpeg.exe
+        ├── ffprobe.exe
+        └── ffplay.exe
+```
+
+## File Descriptions
+
+- `app.py`: Main FastAPI application with all endpoints and processing logic
+- `main.py`: Command-line interface version for Windows users
+- `main_macos.py`: Command-line interface version for macOS users
+- `api_server.py`: Alternative API server implementation with additional features
+- `.env`: Configuration file for environment variables and API keys
+- `requirements.txt`: List of required Python packages
 
 ## Usage
 
-1. Prepare your files:
-   - Place your image file (JPEG, PNG) in the specified IMAGE_PATH
-   - Place your audio file (MP3, WAV, M4A) in the specified AUDIO_PATH
+### Option 1: Using the API Server
 
-2. Run the script:
+1. Start the FastAPI server:
+```bash
+python app.py
+```
+
+2. API will be available at: http://localhost:8000
+
+3. Access API documentation at: http://localhost:8000/docs
+
+### Option 2: Using Command Line Interface
+
+For Windows:
 ```bash
 python main.py
 ```
 
-## Output
-
-The script will generate:
-1. `output.txt`: Contains the product description in Vietnamese
-2. `output.mp3`: Contains the audio response in Vietnamese
-3. Console output showing:
-   - FFmpeg installation status
-   - Audio conversion progress
-   - Transcription results
-   - Product description
-
-## Example
-
-```python
-# Example configuration in main.py
-OUTPUT_DIR = r"C:\Users\YourName\Documents\AI4LI"
-IMAGE_PATH = r"C:\Users\YourName\Documents\AI4LI\product.jpg"
-AUDIO_PATH = r"C:\Users\YourName\Documents\AI4LI\question.m4a"
-FFMPEG_PATH = r"E:\ffmpeg\bin"
+For macOS:
+```bash
+python main_macos.py
 ```
 
+### Option 3: Using Alternative API Server
 
-## 🌐 FastAPI Usage
-
-### Quick Setup
-
-
-
-1. **Start the API server:**
 ```bash
 python api_server.py
 ```
 
-2. **Access the interactive API documentation:**
-   - **Swagger UI:** http://localhost:8000/docs
+## Main Endpoints
 
+- `GET /`: API information
+- `POST /process-image`: Process images
+- `POST /transcribe-audio`: Convert audio to text
+- `POST /process-combined`: Combined image and audio processing
+- `GET /health`: System status check
 
-### 🎯 API Endpoints
+## Getting Google API Key
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/health` | GET | Check API status and dependencies |
-| `/process-image` | POST | Upload image + text prompt → Get AI description + audio |
-| `/transcribe-audio` | POST | Upload audio → Get transcription |
-| `/process-combined` | POST | Upload image + audio → Combined processing |
-| `/download/audio/{filename}` | GET | Download generated audio files |
-| `/download/text/{filename}` | GET | Download generated text files |
+1. Visit https://makersuite.google.com/app/apikey
+2. Create a new API key
+3. Add the API key to your `.env` file
 
-### 🧪 Testing with Swagger UI
+## Platform-Specific Notes
 
-1. **Go to:** http://localhost:8000/docs
-2. **Start with health check:** 
-   - Click `GET /health` endpoint
-   - Click **"Try it out"** button
-   - Click **"Execute"** button
-3. **Test image processing:** 
-   - Click `POST /process-image` endpoint
-   - Click **"Try it out"** button
-   - Upload an image file
-   - Enter prompt (e.g., "tên sản phẩm và màu sắc")
-   - Click **"Execute"** button
-4. **Download results - 3 options:**
-   - **Option 1:** Check `api_output/` folder directly
-   - **Option 2:** Use download links: `http://localhost:8000/download/audio/filename.mp3`
-   - **Option 3:** Use GET endpoints in Swagger UI:
-     - Click `GET /download/audio/{filename}` → **"Try it out"** → Enter filename → **"Execute"**
-     - Click `GET /download/text/{filename}` → **"Try it out"** → Enter filename → **"Execute"**
+### Windows
+- Use `main.py` for command-line interface
+- FFmpeg is pre-installed in the repository
+- Paths are configured for Windows environment
 
-
-
-
-
-
-
-
-
-## Troubleshooting
-
-1. FFmpeg not found:
-   - Verify FFmpeg is installed correctly
-   - Check if the FFMPEG_PATH in main.py is correct
-   - Ensure FFmpeg is in your system PATH
-
-2. Audio conversion issues:
-   - Check if the audio file exists and is accessible
-   - Verify the audio format is supported
-   - Ensure FFmpeg is properly installed
-
-3. Transcription issues:
-   - Check if the audio file is clear and in Vietnamese
-   - Verify the Whisper model is loaded correctly
-   - Ensure sufficient system memory is available
-
-## Notes
-
-- The system is optimized for Vietnamese language
-- Audio files are automatically converted to WAV format for processing
-- Temporary files are automatically cleaned up after processing
-- The Gemini API has usage limits, monitor your API key usage
+### macOS
+- Use `main_macos.py` for command-line interface
+- FFmpeg paths are configured for macOS
+- May need to install FFmpeg via Homebrew if not using included version
 
 ## Contributing
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+Contributions are welcome! Please feel free to submit issues or pull requests.
+
+## License
+
+MIT License
