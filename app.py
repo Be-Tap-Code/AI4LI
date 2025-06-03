@@ -426,4 +426,6 @@ async def health_check():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8000) 
+    # For local development, use 127.0.0.1
+    host = "0.0.0.0" if os.getenv("KAGGLE_KERNEL_RUN_TYPE") else "127.0.0.1"
+    uvicorn.run(app, host=host, port=8000) 
