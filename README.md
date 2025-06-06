@@ -32,6 +32,7 @@ pip install -r requirements.txt
 ```
 GOOGLE_API_KEY=your_api_key_here
 ```
+**Important:** Do not commit your `.env` file to version control for security reasons. Add it to your `.gitignore` file.
 
 ## Directory Structure
 
@@ -119,6 +120,12 @@ python api_server.py
 - Use `main_macos.py` for command-line interface
 - FFmpeg paths are configured for macOS
 - May need to install FFmpeg via Homebrew if not using included version
+
+## Troubleshooting
+
+If you encounter issues, consider the following:
+- **API Key:** Ensure your `GOOGLE_API_KEY` in the `.env` file is correct and has the necessary permissions.
+- **FFmpeg:** Verify that FFmpeg is correctly set up and accessible in your system's PATH, or that the included FFmpeg binaries are correctly located and configured.
 
 ## Contributing
 
